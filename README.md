@@ -7,3 +7,8 @@ And then, it searches for musics that have similar characteristics in the catego
 * A function that uses Spotipy library to retrieve the song a user enters in prompt.
 * A function that uses LibROSA library to analyze the song.
 * A function that uses Spotipy library to retrieve broadway musical songs that have similar characteristics.
+
+## instruction
+First, run main.py. There are prompts to enter your Spotify client ID and secret. (If you have, you can enter. If you don't, you can skip.)
+Next, you are asked to enter your favorite song name. Fill it in English.
+Then, you will receive the recommendations for musical songs based on your favorite song.
