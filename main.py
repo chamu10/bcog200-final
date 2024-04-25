@@ -8,8 +8,8 @@ import json
 class SpotifyAPI:
 	def __init__(self):	
 	# credential for spotify
-		client_id = os.environ.get('CLIENT_ID') 
-		client_secret = os.environ.get('CLIENT_SECRET')
+		client_id = "c69b7db0a8f8422da267ce05f5d8d2bc"#os.environ.get('CLIENT_ID') 
+		client_secret = "ec818457ebeb4f928acdde722b3ac3b4"#os.environ.get('CLIENT_SECRET')
 		client_credential = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
 		self.client = spotipy.Spotify(client_credentials_manager=client_credential)
 
@@ -118,7 +118,7 @@ class Recommend:
 		for i in range(3):
 			target_id = self.recommended_songs[i]["id"]
 			target_track = self.musical_results["items"][self.musical_results["items"]["id"]==target_id]
-			print(f"Your No.{i} recommendation is {target_track["name"]} by {target_track["album"]["name"]}")
+			print("Your No.{i} recommendation is {} by {}".format(target_track["name"], target_track["album"]["name"]))
 
 
 def main():
