@@ -8,8 +8,8 @@ import json
 class SpotifyAPI:
 	def __init__(self):	
 	# credential for spotify
-		client_id = os.environ.get('CLIENT_ID') 
-		client_secret = os.environ.get('CLIENT_SECRET')
+		client_id = os.environ.get('client_id') 
+		client_secret = os.environ.get('client_secret')
 		client_credential = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
 		self.client = spotipy.Spotify(client_credentials_manager=client_credential)
 
