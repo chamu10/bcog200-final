@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pandas as pd
 #import numpy as np
 import spotipy
@@ -12,6 +13,7 @@ class SpotifyAPI:
 		client_secret = input("Enter your Spotify client secret:")
 		client_credential = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
 		self.client = spotipy.Spotify(client_credentials_manager=client_credential)
+
 
 	
 	# serach the song track of the song from Spotify
@@ -104,6 +106,7 @@ class Recommend:
 		self.musical_song_info_sorted_df = self.musical_song_info.sort_values(by="similarity", ascending=False) 
 		return self.musical_song_info_sorted_df.reset_index(drop=True, inplace=True)
 		
+
 
 	# print the results
 	def recommend_print(self):
