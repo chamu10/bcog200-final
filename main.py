@@ -7,11 +7,16 @@ import json
 
 class SpotifyAPI:
 	def __init__(self):	
+		self.client = self.spotify_credential()
+	
+
 	# credential for spotify
-		client_id = "c69b7db0a8f8422da267ce05f5d8d2bc"#os.environ.get('CLIENT_ID') 
-		client_secret = "ec818457ebeb4f928acdde722b3ac3b4"#os.environ.get('CLIENT_SECRET')
+	def spotify_credential(self):
+		client_id = os.environ.get('CLIENT_ID') 
+		client_secret = os.environ.get('CLIENT_SECRET')
 		client_credential = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
-		self.client = spotipy.Spotify(client_credentials_manager=client_credential)
+		client = spotipy.Spotify(client_credentials_manager=client_credential)
+		return client
 
 
 	
@@ -19,7 +24,7 @@ class SpotifyAPI:
 	def search_fav_song_track(self, song_name):
 		try:
 			result = self.client.search(song_name, type='track')
-			track_data = result["tracks"]["items"]
+			track_data = list(result["tracks"]["items"]) #convert set to list
 			return track_data
 		except spotipy.client.SpotifyException as e:
 			if e.http_status == 429:
@@ -31,8 +36,9 @@ class SpotifyAPI:
 	# get all track data of musicla songs
 	def serach_musical_track(self):
 		try:
-			musical_results = self.client.search(q = "genre: musical", type='track')
-			return musical_results["tracks"]
+			musical_results = self.client.search(q = "Top 100 Musical Songs", type='track', limit=50)
+			musical_track = list(musical_results["tracks"]["items"]) #convert set to list
+			return musical_track
 		except spotipy.client.SpotifyException as e:
 			if e.http_status == 429:
 				print("Rate Limit exceeded. Please wait. ")
@@ -44,17 +50,15 @@ class DataProcessing:
 		self.client = client
 		self.fav_song_results = fav_song_results
 		self.musical_results = musical_results
-	
-	need_item = ["acousticness","danceability","energy","id","instrumentalness","key","liveness","loudness","mode","speechiness","tempo","valence"]
+		self.need_item = ["acousticness","danceability","energy","id","instrumentalness","key","liveness","loudness","mode","speechiness","tempo","valence"]
 
 	# get features of the favorite song
 	def get_fav_song_features(self):
 		track_id = self.fav_song_results[0]["id"]
 		try:
-			fav_song_features = self.client.audio_features(track_id)
-			fav_song_features = [fav_song_features[key]for key in need_item]
-			features_series = pd.Series(fav_song_features) 
-			return features_series
+			fav_song_features = self.client.audio_features(track_id) 
+			features_series = pd.Series({key: fav_song_features[0][key] for key in self.need_item})
+			return features_series.drop("id")
 		except:
 			return None
 
@@ -63,78 +67,81 @@ class DataProcessing:
 	def get_musical_item_list(self, item, subitem=None):
 		item_list = []
 		if subitem == None:
-			for track in musical_results["items"]:
-				item_list.append(track[item])
+			for track in self.musical_results:
+					item_list.append(track[item])
 		else:
-			for track in musical_results["items"]:
+			for track in self.musical_results:
 				item_list.append(track[item][subitem])
 		return item_list
 
 	# get df of features for musical songs
 	def get_musical_features(self):
-		id_list = self.get_musical_item_list(self.musical_results, "id")
+		id_list = self.get_musical_item_list("id")
 		try:
 			musical_features_list = []
 			for track_id in id_list:
 				musical_features = self.client.audio_features(track_id)
-				musical_features = [musical_features[key]for key in need_item]
+				musical_features = [musical_features[0][key]for key in self.need_item]
 				musical_features_list.append(musical_features)
-
-			features_df = pd.DataFrame(data = musical_features_list, columns=musical_features_list[0].keys())
-			#features_df.set_index("id", inplace=True)
+			
+			features_df = pd.DataFrame(data = musical_features_list, columns=self.need_item)
+			features_df.set_index("id", inplace=True) 
 			return features_df
 		except:
 			return None
 
-	"""# get df of infomation for musical songs
-				def get_musical_info(self):
-					id_list = self.get_musical_item_list(self.musical_results, "id")
-					titles_list = self.get_musical_item_list(self.musical_results, "name")
-					album_list = self.get_musical_item_list(self.musical_results, "album","name")
-					info_df = pd.DataFrame(list(zip(titles_list, album_list)), columns=["id", "title", "album"], index=id_list)
-					return info_df"""
+	# get df of infomation for musical songs
+	def get_musical_info(self):
+		id_list = self.get_musical_item_list("id")
+		titles_list = self.get_musical_item_list("name")
+		album_list = self.get_musical_item_list("album","name")
+		info_df = pd.DataFrame([id_list, titles_list, album_list], index=["id", "title", "album"]).T
+		return info_df
 
 
 
 class Recommend:
-	def __init__(self, fav_song_feature, musical_song_features, musical_results):
+	def __init__(self, fav_song_features, musical_song_features, musical_results, musical_song_info):
 		self.recommended_songs = None
-		self.fav_song_feature = fav_song_feature
+		self.fav_song_features = fav_song_features
 		self.musical_song_features = musical_song_features
 		self.musical_results = musical_results
-		self.recommended_songs = recommend_songs()
+		self.musical_song_info = musical_song_info
+		
         
 	# calculate similarity scores and sort based on the similarity scores
 	def recommend_songs(self):
 		# calculate similarity scores
-		self.musical_song_features["similarity"]= cosine_similarity(self.musical_song_features, self.fav_song_features).squeeze()
-		
+		fav_song_features_2D = pd.DataFrame(self.fav_song_features).transpose()
+		self.musical_song_features["similarity"]= cosine_similarity(self.musical_song_features, fav_song_features_2D).squeeze()
 		# sort musical songs based on the similarity scores
-		return self.musical_song_features.sort_values(by="similarity", ascending=False).reset_index(drop=True, inplace=True) 
+		return self.musical_song_features.sort_values(by="similarity", ascending=False) 
 		
 
 	# print the results
-	def recommend_print(self):
+	def recommend_print(self, recommended_songs):
 		for i in range(3):
-			target_id = self.recommended_songs[i]["id"]
-			target_track = self.musical_results["items"][self.musical_results["items"]["id"]==target_id]
-			print("Your No.{i} recommendation is {} by {}".format(target_track["name"], target_track["album"]["name"]))
+			target_id = recommended_songs.index[i]
+			target_track = self.musical_song_info[self.musical_song_info["id"]==target_id]
+			print("Your No {} recommendation is {} from the album '{}'".format(i+1, target_track["title"].to_string(index=False), target_track["album"].to_string(index=False)))
 
 
 def main():
-	client = SpotifyAPI()
-
+	api = SpotifyAPI()
+	client = api.spotify_credential()
 	fav_song_name = input("Enter your favorite song name: ") # ask a question about favorite song and return answer
-	fav_song_results = client.search_fav_song_track(fav_song_name) # get all favorite song search results 
-	musical_results = client.serach_musical_track() # get all musical songs search results 
+	fav_song_results = api.search_fav_song_track(fav_song_name) # get all favorite song search results 
+	musical_results = api.serach_musical_track() # get all musical songs search results 
 
 	data = DataProcessing(client, fav_song_results, musical_results)
 	fav_song_features = data.get_fav_song_features() # get df of features for favorite song
 	musical_song_features = data.get_musical_features() # get df of features for musical songs
-	#musical_song_info = data.get_musical_info() # get df of information for musical songs
+	musical_song_info = data.get_musical_info() # get df of information for musical songs
+	
 
-	recommend = Recommendation(fav_song_features, musical_song_features, musical_song_results)
-	recommend.recommend_print() # print the recommendation
+	recommend = Recommend(fav_song_features, musical_song_features, musical_results, musical_song_info)
+	recommended_songs = recommend.recommend_songs() # calculate similarity scores and sort based on the similarity scores
+	recommend.recommend_print(recommended_songs) # print the recommendation
 
 
 if __name__ == "__main__":
