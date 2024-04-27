@@ -11,13 +11,13 @@ class SpotifyAPI:
 	
 	# credential for spotify
 	def spotify_credential(self):
-		client_id = os.environ.get('CLIENT_ID') 
-		client_secret = os.environ.get('CLIENT_SECRET')
+		client_id = os.environ['CLIENT_ID']
+		client_secret = os.environ.['CLIENT_SECRET']
 		client_credential = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
 		client = spotipy.Spotify(client_credentials_manager=client_credential)
 		return client
 
-	# serach the song track of the song from Spotify
+	# serach the track id of the song from Spotify
 	def search_fav_song_track(self, song_name):
 		try:
 			result = self.client.search(song_name, type='track')
