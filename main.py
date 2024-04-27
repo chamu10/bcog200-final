@@ -12,7 +12,7 @@ class SpotifyAPI:
 	# credential for spotify
 	def spotify_credential(self):
 		client_id = os.environ['CLIENT_ID']
-		client_secret = os.environ.['CLIENT_SECRET']
+		client_secret = os.environ['CLIENT_SECRET']
 		client_credential = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
 		client = spotipy.Spotify(client_credentials_manager=client_credential)
 		return client
