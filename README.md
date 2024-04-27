@@ -4,22 +4,31 @@
 This is a program that suggests you broadway musical songs which have similar tastes with your favorite song.
 I made this program because I like broadway musical songs and want to share them with my friends who have little interest in musicals.
 
-## Description
+## Code Description
 First, to use Spotify API, this program makes an authentication by using credential ID and password.
 
-Next, when you enter your favortie song in a prompt, this program retrieve track id of the song in spotify and basic information.
-Also, it retrieve musical songs information.
+`client = spotipy.Spotify(client_credentials_manager=client_credential)`
 
-Then, it analyses the similarity between your favorite song and musical songs from numerical perspectives.
+Next, when you enter your favortie song in a prompt, this program retrieve track basic information and audio features of the song in spotify.
+Also, it retrieves musical songs information.
+
+`result = self.client.search(song_name, type='track') #retrieve basic infomation of song_name`
+
+`fav_song_features = self.client.audio_features(track_id) #retrieve audio features of track_id`
+
+Then, it analyses the similarity between your favorite song and musical songs from numerical perspectives by calculating cosin similarity.
+
 `["acousticness","danceability","energy","id","instrumentalness","key","liveness","loudness","mode","speechiness","tempo","valence"]`
+
+`cosine_similarity(self.musical_song_features, fav_song_features_2D).squeeze()`
 
 Lastly it suggests you top 3 musical songs that have similar tast with your favorite song.
 
 Following is an example. It gives you song name and album name in which the song is collected.
 
-## function
-* A function that uses Spotipy library to retrieve track id of broadway musical songs and user's favorite song.
-* A function that uses Spotipy library to retrieve music features of broadway musical songs and user's favorite song.
+## Using Function
+* A function that uses Spotipy to retrieve track id of broadway musical songs and user's favorite song.
+* A function that uses Spotipy to retrieve music features of broadway musical songs and user's favorite song.
 * A function that uses sklearn library to calculate the song similarity.
 
 ## Instruction
