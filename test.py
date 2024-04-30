@@ -195,6 +195,7 @@ def test_get_fav_song_features(fav_song_results, musical_results, mock, expected
 		["valid_id1", "valid_id2", "valid_id3"]
 		),
 	])
+
 def test_get_musical_item_list(musical_results, expected):
 	data_processing = DataProcessing(None, None, musical_results)
 	result = data_processing.test_get_musical_item_list("id")
@@ -221,6 +222,7 @@ def test_get_musical_features(mock, expected):
 	result = data_processing.get_musical_features()
 	assert result == expected
 
+
 @pytest.mark.parametrize("musical_song_features, mock, expected",
 	[
 	#Test case 1: success 
@@ -236,10 +238,11 @@ def test_get_musical_features(mock, expected):
 		None,
 		),
 	])
+
 def test_recommend_song(musical_song_features, mock, expected):
 	recommend = Recommend(None, musical_song_features, None)
 	recommend.cosine_similarity = MagicMock(return_value=mock)
 	result = recommend.recommend_song()
 	assert result == expected
 
-print("test end")
+print("test start")
