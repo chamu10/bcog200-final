@@ -6,14 +6,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 class SpotifyAPI:
-	def __init__(self):	
+	def __init__(self, client_id, client_secret):
+		self.client_id = client_id
+		self.client_secret = client_secret	
 		self.client = self.spotify_credential()
 	
 	# credential for spotify
 	def spotify_credential(self):
-		client_id = os.environ['CLIENT_ID']
-		client_secret = os.environ['CLIENT_SECRET']
-		client_credential = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
+		client_credential = SpotifyClientCredentials(client_id=self.client_id, client_secret=self.client_secret)
 		client = spotipy.Spotify(client_credentials_manager=client_credential)
 		return client
 
@@ -122,6 +122,8 @@ class Recommend:
 
 
 def main():
+	client_id = input("Enter your Spotify client ID:")
+	client_secret = input("Enter your Spotify client secret:")
 	api = SpotifyAPI()
 	client = api.spotify_credential()
 	fav_song_name = input("Enter your favorite song name: ") # ask a question about favorite song and return answer
