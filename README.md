@@ -7,22 +7,22 @@ I made this program because I like broadway musical songs and want to share them
 ## Code Description
 * First, to use Spotify API, this program makes an authentication by using credential ID and password.
 
-`client = spotipy.Spotify(client_credentials_manager=client_credential)`
+  `client = spotipy.Spotify(client_credentials_manager=client_credential)`
 
-* Next, when you enter your favortie song in a prompt, this program retrieve track basic information and audio features of the song in spotify.
-Also, it retrieves musical songs information.
+* Next, when you enter your favortie song in a prompt, this program retrieve basic information and audio features of the song in spotify.
+At the same time, it retrieves musical songs information.
 
-`result = self.client.search(song_name, type='track') #retrieve basic infomation of song_name`
+  `result = self.client.search(song_name, type='track') #retrieve basic infomation of song_name`
 
-`fav_song_features = self.client.audio_features(track_id) #retrieve audio features of track_id`
+  `fav_song_features = self.client.audio_features(track_id) #retrieve audio features of track_id`
 
 * Then, it analyses the similarity between your favorite song and musical songs from numerical perspectives by calculating cosin similarity.
 
-`["acousticness","danceability","energy","id","instrumentalness","key","liveness","loudness","mode","speechiness","tempo","valence"]`
+  `["acousticness","danceability","energy","id","instrumentalness","key","liveness","loudness","mode","speechiness","tempo","valence"]`
 
-`cosine_similarity(self.musical_song_features, fav_song_features_2D).squeeze()`
+  `cosine_similarity(self.musical_song_features, fav_song_features_2D).squeeze()`
 
-* Lastly it suggests you top 3 musical songs that have similar tast with your favorite song.
+* Lastly it suggests you top 3 musical songs that have similar taste with your favorite song.
 
 * Following is an example. It gives you song name and album name.
   ![image](https://github.com/chamu10/bcog200-final/assets/90808614/860e64ba-7a24-422c-8a95-aa7b8401d430)
@@ -41,10 +41,12 @@ Also, it retrieves musical songs information.
 2. Download main.py and save it in your local file.
 3. Insatll pandas, spotify, and scikit-learn packages.
 
-`pip install pandas spotify scikit-learn`
+    `pip install pandas spotify scikit-learn`
+
 4. Move to where you save main.py and run it.
 
-`python3.12 main.py`
+    `python3.12 main.py`
+
 5. You are asked to enter your Spotify client ID, Spotify client secret and favorite song name. Fill in.
 6. You will receive the recommendations for musical songs based on your favorite song.
 
