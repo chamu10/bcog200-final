@@ -24,7 +24,8 @@ Also, it retrieves musical songs information.
 
 * Lastly it suggests you top 3 musical songs that have similar tast with your favorite song.
 
-* Following is an example. It gives you song name and album name in which the song is collected.
+* Following is an example. It gives you song name and album name.
+  ![image](https://github.com/chamu10/bcog200-final/assets/90808614/860e64ba-7a24-422c-8a95-aa7b8401d430)
 
 ## Using Function
 * A function that uses Spotipy to retrieve track id of broadway musical songs and user's favorite song.
