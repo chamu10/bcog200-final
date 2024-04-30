@@ -38,7 +38,7 @@ At the same time, it retrieves musical songs information.
    - Refer to this website. [Getting Started with Spotify's API&Spotify](https://medium.com/@maxtingle/getting-started-with-spotifys-api-spotipy-197c3dc6353b)
      - If you do not have Spotify account, first create your Spotify account. Next, follow the below instruction. 
      - If you have Spotify account, go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/) and click "create an app." Then, you are provided with your client ID and credential.
-2. Download main.py and save it in your local file.
+2. Download "main.py" from master branch and save it in your local file.
 3. Insatll pandas, spotify, and scikit-learn packages.
 
     `pip install pandas spotify scikit-learn`
