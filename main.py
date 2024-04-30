@@ -124,7 +124,7 @@ class Recommend:
 def main():
 	client_id = input("Enter your Spotify client ID:")
 	client_secret = input("Enter your Spotify client secret:")
-	api = SpotifyAPI()
+	api = SpotifyAPI(client_id, client_secret)
 	client = api.spotify_credential()
 	fav_song_name = input("Enter your favorite song name: ") # ask a question about favorite song and return answer
 	fav_song_results = api.search_fav_song_track(fav_song_name) # get all favorite song search results 
