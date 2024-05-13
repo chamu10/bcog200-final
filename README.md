@@ -33,22 +33,30 @@ At the same time, it retrieves musical songs information.
 * A function that uses sklearn library to calculate the song similarity.
 
 ## Instruction
-1. Create your Spotify API account.
-   - This program uses Spotify API so you need your Spotify client ID and credential. Creating and using API is free. 
+1. Prepare your Spotify account.
+   - This program uses Spotify API so you need your Spotify client ID and secret. Creating and using API is free. 
    - Refer to this website. [Getting Started with Spotify's API&Spotify](https://medium.com/@maxtingle/getting-started-with-spotifys-api-spotipy-197c3dc6353b)
-     - If you do not have Spotify account, first create your Spotify account. Next, follow the below instruction. 
-     - If you have Spotify account, go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/) and click "create an app." Then, you are provided with your client ID and credential.
-2. Download "main.py" from master branch and save it in your local file.
-3. Insatll pandas, spotify, and scikit-learn packages.
+     - If you do not have Spotify account, first create your Spotify account [here](https://open.spotify.com/). After you create your account, follow the below instruction. 
+     - If you have Spotify account, go to the [Spotify for Developers](https://developer.spotify.com).
+2. Obtain your Spotify API client ID and secret.
+Refer to this website. [Getting Started](https://developer.spotify.com/documentation/web-api)
+  - Log in with your Spotify account. 
+  - After go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/).
+  - Click "create an app."
+  - Fill in required items.
+  - Next, in your new app dashboard, click "settings."
+  - From basic information, you can know your client ID and secret.
+3. Download "main.py" from master branch and save it in your local file.
+4. Insatll pandas, spotipy, and scikit-learn packages.
 
-    `pip install pandas spotify scikit-learn`
+    `pip install pandas spotipy scikit-learn`
 
-4. Move to where you save main.py and run it.
+5. Move to where you save main.py and run it.
 
     `python3.12 main.py`
 
-5. You are asked to enter your Spotify client ID, Spotify client secret and favorite song name. Fill in.
-6. You will receive the recommendations for musical songs based on your favorite song.
+6. You are asked to enter your Spotify client ID, Spotify client secret and favorite song name. Fill in.
+7. You will receive the recommendations for musical songs based on your favorite song.
 
 ## Acknowledgments
 I refered or used the following sites to make this project.
