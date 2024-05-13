@@ -42,9 +42,9 @@ At the same time, it retrieves musical songs information.
 Refer to this website. [Getting Started](https://developer.spotify.com/documentation/web-api)
   - Log in with your Spotify account. 
   - After go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/).
-  - Click "create an app."
-  - Fill in required items.
+  - Click "create an app." Fill in required items.
   - Next, in your new app dashboard, click "settings."
+![image](https://github.com/chamu10/bcog200-final/assets/90808614/429fd9dc-8dc4-477a-9258-0d41e8b5afb2)
   - From basic information, you can know your client ID and secret.
 3. Download "main.py" from master branch and save it in your local file.
 4. Insatll pandas, spotipy, and scikit-learn packages.
